@@ -168,9 +168,9 @@ nu_range = np.logspace(-2.5,1,L)
 scaling_param = np.linspace(0.01, 2, 20)
 SR_param = np.linspace(0.5, 10, 20 )
 
-all_error_test = []
-all_error_train = []
-all_r2 = []
+all_error= []
+all_SR = []
+all_scal = []
 
 
 for nu in nu_range:
