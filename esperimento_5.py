@@ -76,10 +76,10 @@ def simulate_error(x_train, y_train, x_test, y_test, scaling_param, SR_param
         #E_test = []
         #R2 = []
         #count += 1
-        print "SR ", SR
+        #print "SR ", SR
 
         for scaling in scaling_param:
-            print "scaling", scaling
+            #print "scaling", scaling
 
 
             for sim in range(num_sim):
@@ -190,10 +190,10 @@ for nu in nu_range:
         all_SR.append(best_SR)
         all_scal.append(best_scal)
 
-    E_TEST = np.array(all_error).reshape(L, L)
-    SR = np.array(all_SR).reshape(L, L)
-    scal = np.array(all_scal).reshape(L, L)
+E_TEST = np.array(all_error).reshape(L, L)
+SR = np.array(all_SR).reshape(L, L)
+scal = np.array(all_scal).reshape(L, L)
 
-    np.save('E_test_5', E_TEST)
-    np.save('SR_5', SR)
-    np.save('scal_5', scal)
+np.save('E_test_5', E_TEST)
+np.save('SR_5', SR)
+np.save('scal_5', scal)
