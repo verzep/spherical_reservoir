@@ -161,7 +161,7 @@ def nonlinear_task(data, nu, tau, train_len=5000, test_len=2000):
 
 
 #create random data
-L = 16
+L = 20
 tau_range = np.arange(0, L)
 nu_range = np.logspace(-2.5,1,L)
 
