@@ -161,8 +161,8 @@ def nonlinear_task(data, nu, tau, train_len=5000, test_len=2000):
 
 
 #create random data
-L = 20
-tau_range = np.arange(0,L)
+L = 16
+tau_range = np.arange(0, L)
 nu_range = np.logspace(-2.5,1,L)
 
 scaling_param = np.linspace(0.01, 2, 20)
@@ -189,6 +189,11 @@ for nu in nu_range:
         all_error.append(mse)
         all_SR.append(best_SR)
         all_scal.append(best_scal)
+
+        np.save('E_test_5_part', np.array(all_error))
+        np.save('SR_5_part', np.array(all_SR))
+        np.save('scal_5_part', np.array(all_scal))
+
 
 E_TEST = np.array(all_error).reshape(L, L)
 SR = np.array(all_SR).reshape(L, L)
