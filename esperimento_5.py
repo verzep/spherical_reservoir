@@ -118,11 +118,7 @@ def simulate_error(x_train, y_train, x_test, y_test, scaling_param, SR_param
                 mse += np.sqrt(mean_squared_error(y_predicted, y_test)) / np.std(y_test)
                 r2 += r2_score(y_predicted[:], y_test[:])
 
-           # print (mse / num_sim)
 
-            #E_train.append(mse_train / num_sim)
-            #E_test.append(mse / num_sim)
-            #R2.append(r2 / num_sim)
 
             # selected with the training error
             if mse_train / num_sim < E_train_min:

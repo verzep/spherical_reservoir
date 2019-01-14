@@ -1,66 +1,11 @@
 import numpy as np
 from matplotlib import pyplot as plt
-#import scipy.io as sio
+import scipy.io as sio
 from pyESN import ESN
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from copy import deepcopy
 
 from data_mng import forecasting_data_split, memory_data_split
-
-
-def simulate_loss(x_train,
-                  y_train,
-                  x_test,
-                  y_test,
-                  n_inputs=1,
-                  n_outputs=1,
-                  n_reservoir=1000,
-                  spectral_radius=8,
-                  sparsity=0.0,
-                  noise=0.00,
-                  scaling=1,
-                  transient=100,
-                  reservoir_uniform=True,
-                  regularization=0.0,
-                  online_training=False,
-                  learning_rate=0.1,
-                  neuron_activation=6,
-                  leak_rate=1,
-                  random_state=None,
-                  output_feedback=False,
-                  radius=10,
-                  wigner=False
-                  ):
-    esn = ESN(n_inputs=n_inputs,
-              n_outputs=n_outputs,
-              n_reservoir=n_reservoir,
-              spectral_radius=spectral_radius,
-              sparsity=sparsity,
-              noise=noise,
-              input_scaling=scaling / np.std(x_test),
-              output_scaling=scaling / np.std(y_test),
-              transient=transient,
-              reservoir_uniform=reservoir_uniform,
-              regularization=regularization,
-              online_training=online_training,
-              learning_rate=learning_rate,
-              neuron_activation=neuron_activation,
-              leak_rate=leak_rate,
-              random_state=random_state,
-              output_feedback=output_feedback,
-              radius=radius,
-              wigner=wigner)
-
-    y_train_predicted = esn.fit(x_train, y_train)
-    y_predicted = esn.predict(x_test)
-
-    mse_train = np.sqrt(mean_squared_error(y_train_predicted[2 * transient:], y_train[2 * transient:])) / np.std(
-        y_train)
-    mse = np.sqrt(mean_squared_error(y_predicted, y_test)) / np.std(y_test)
-    r2 = r2_score(y_predicted[100:], y_test[100:])
-
-    return mse_train, mse, r2
-
 
 def simulate_error(x_train, y_train, x_test, y_test, scaling_param, SR_param
                    ,neuron_activation=0
@@ -89,7 +34,7 @@ def simulate_error(x_train, y_train, x_test, y_test, scaling_param, SR_param
 
                 esn = ESN(n_inputs=1,
                           n_outputs=1,
-                          n_reservoir=1000,
+                          n_reservoir=200,
                           spectral_radius=SR,
                           radius=1,
                           sparsity=0.0,
@@ -108,17 +53,17 @@ def simulate_error(x_train, y_train, x_test, y_test, scaling_param, SR_param
                           # , wigner = True
                           )
 
-                transient = 200
+                transient = 50
                 esn.evolve(x_train, y_train)
                 y_train_predicted = esn.train(y_train)
 
                 y_predicted = esn.predict(x_test)
 
-                mse_train += np.sqrt(mean_squared_error(y_train_predicted[2 * transient:], y_train[2 * transient:])) / np.std(y_train)
+                mse_train += np.sqrt(mean_squared_error(y_train_predicted[transient:], y_train[ transient:])) / np.std(y_train)
                 mse += np.sqrt(mean_squared_error(y_predicted, y_test)) / np.std(y_test)
                 r2 += r2_score(y_predicted[:], y_test[:])
 
-            # print (mse / num_sim)
+            #print (mse_train / num_sim)
 
             #E_train.append(mse_train / num_sim)
             #E_test.append(mse / num_sim)
@@ -126,8 +71,9 @@ def simulate_error(x_train, y_train, x_test, y_test, scaling_param, SR_param
 
             # selected with the training error
             if mse_train / num_sim < E_train_min:
+                #print mse_train, ' < ', E_train_min
                 #print 'I WAS ', E_min, "NOW ", mse / num_sim
-                #E_train_min = mse_train / num_sim
+                E_train_min = mse_train / num_sim
                 E_min = mse / num_sim
                 min_SR = SR / num_sim
                 min_scal = scaling / num_sim
@@ -147,7 +93,7 @@ def y_nonlinear(signal, nu, tau):
     return np.sin(nu * arg[:])
 
 
-def nonlinear_task(data, nu, tau, train_len=5000, test_len=2000):
+def nonlinear_task(data, nu, tau, train_len=500, test_len=200):
     NL_data = y_nonlinear(data, nu, tau)
 
     x_train = data[2 * tau:train_len] + 0
@@ -201,3 +147,6 @@ scal = np.array(all_scal).reshape(L, L)
 np.save('E_test_0', E_TEST)
 np.save('SR_0', SR)
 np.save('scal_0', scal)
+
+
+
