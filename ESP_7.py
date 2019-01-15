@@ -113,7 +113,7 @@ tau_range = np.arange(0,L)
 nu_range = np.logspace(-2.5,1,L)
 
 scaling_param = np.linspace(0.01, 2, 20)
-SR_param = np.linspace(0.2, 3, 20 )
+SR_param = np.linspace(0.2, 1.5, 20 )
 
 all_error= []
 all_SR = []
