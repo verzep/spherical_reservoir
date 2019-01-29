@@ -371,7 +371,7 @@ param = np.array(param)
 ax1.set_xlabel("timesteps")
 ax1.plot(param,E_test_n, 'b', label = 'spherical_test')
 ax1.fill_between(param, E_test_n-V_test_n, E_test_n+V_test_n,color='b', alpha=0.2 )
-ax1.plot(param, E_train_n,'b--', label = 'SNACT_train')
+ax1.plot(param, E_train_n,'b--', label = 'spherical_train')
 ax1.fill_between(param, E_train_n-V_train_n, E_train_n+V_train_n,color='b', alpha=0.2 )
 
 ax1.plot(param,E_test_s , 'r', label = 'regular_test')
