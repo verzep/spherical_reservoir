@@ -53,7 +53,7 @@ def simulate_error(x_train, y_train, x_test, y_test, scaling_param, SR_param
                           # , wigner = True
                           )
 
-                transient = 200
+                transient = 500
                 esn.evolve(x_train, y_train)
                 y_train_predicted = esn.train(y_train)
 
@@ -117,7 +117,7 @@ def simulate_loss(x_train,
                         sparsity=0.0,
                         noise=0.00,
                         scaling = 1,
-                        transient=200 ,
+                        transient=500 ,
                         reservoir_uniform=True,
                         regularization=0.0,
                         online_training=False,
