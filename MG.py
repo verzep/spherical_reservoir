@@ -245,7 +245,7 @@ for i in param:
                         y_test,
                         activation=5,
                         spectral_radius=20,
-                        scaling=1,
+                        scaling=0.01,
                       reps=reps
                          )
     E_train_n.append(train)

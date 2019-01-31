@@ -208,10 +208,10 @@ def repeat_experiment(x_train,
 #data = np.loadtxt('data/lorenz.dat')
 #data = np.loadtxt('data/henon.dat')
 #data = np.loadtxt('data/rossler.dat')
-#data = np.loadtxt('data/laser_long.dat')
+data = np.loadtxt('data/laser_long.dat')
 #data = np.loadtxt('data/light_curve.dat')
 #data = np.loadtxt('data/sunspot_M')
-data = 2*np.random.rand(10000)-1
+#data = 2*np.random.rand(10000)-1
 
 data_len = data.shape[0]
 train_len = 6000
@@ -399,7 +399,8 @@ ax1.legend(loc="best")
 
 
 
-plt.title("Memory - WN")
-plt.savefig("Memory-WN.pdf", format='pdf', dpi=1000, bbox_inches='tight', pad_inches=0.05)
+plt.title("Memory - Santa Fe")
+plt.savefig("Memory-SF.pdf", format='pdf', dpi=1000, bbox_inches='tight', pad_inches=0.05)
 #plt.show()
+
 
