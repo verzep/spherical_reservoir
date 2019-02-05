@@ -205,10 +205,10 @@ def repeat_experiment(x_train,
 #data = sio.loadmat('data/MG.mat')['signal']
 #data = np.loadtxt('data/MSO_3freq')
 #data = np.loadtxt('data/square_wave')
-#data = np.loadtxt('data/lorenz.dat')
+data = np.loadtxt('data/lorenz.dat')
 #data = np.loadtxt('data/henon.dat')
 #data = np.loadtxt('data/rossler.dat')
-data = np.loadtxt('data/laser_long.dat')
+#data = np.loadtxt('data/laser_long.dat')
 #data = np.loadtxt('data/light_curve.dat')
 #data = np.loadtxt('data/sunspot_M')
 #data = 2*np.random.rand(10000)-1
@@ -339,7 +339,7 @@ V_r2_l = np.array(V_r2_l)
 
 
 
-np.savez('data_SF',
+np.savez('data_lorenz',
         E_test_n = E_test_n,
         V_test_n = V_test_n,
         E_train_n = E_train_n,
@@ -361,30 +361,30 @@ np.savez('data_SF',
         )
 
 
-fig, ax1 = plt.subplots(figsize = (15,8))
-plt.tight_layout()
+#fig, ax1 = plt.subplots(figsize = (15,8))
+#plt.tight_layout()
 #ax2 = ax1.twinx()
-param = np.array(param)
+#param = np.array(param)
 
-ax1.set_xlabel("timesteps")
-ax1.plot(param,E_test_n, 'b', label = 'spherical_test')
-ax1.fill_between(param, E_test_n-V_test_n, E_test_n+V_test_n,color='b', alpha=0.2 )
-ax1.plot(param, E_train_n,'b--', label = 'spherical_train')
-ax1.fill_between(param, E_train_n-V_train_n, E_train_n+V_train_n,color='b', alpha=0.2 )
+#ax1.set_xlabel("timesteps")
+#ax1.plot(param,E_test_n, 'b', label = 'spherical_test')
+#ax1.fill_between(param, E_test_n-V_test_n, E_test_n+V_test_n,color='b', alpha=0.2 )
+#ax1.plot(param, E_train_n,'b--', label = 'spherical_train')
+#ax1.fill_between(param, E_train_n-V_train_n, E_train_n+V_train_n,color='b', alpha=0.2 )
 
-ax1.plot(param,E_test_s , 'r', label = 'regular_test')
-ax1.fill_between(param, E_test_s-V_test_s, E_test_s+V_test_s,color='r', alpha=0.2 )
-ax1.plot(param,E_train_s , 'r--', label = 'regular_train')
-ax1.fill_between(param, E_train_s-V_train_s, E_train_s+V_train_s,color='r', alpha=0.2 )
+#ax1.plot(param,E_test_s , 'r', label = 'regular_test')
+#ax1.fill_between(param, E_test_s-V_test_s, E_test_s+V_test_s,color='r', alpha=0.2 )
+#ax1.plot(param,E_train_s , 'r--', label = 'regular_train')
+#ax1.fill_between(param, E_train_s-V_train_s, E_train_s+V_train_s,color='r', alpha=0.2 )
 
-ax1.plot(param,E_test_l , 'g', label = 'linear_test')
-ax1.fill_between(param, E_test_l-V_test_l, E_test_l+V_test_l,color='g', alpha=0.2 )
-ax1.plot(param,E_train_l , 'g--', label = 'linear_train')
-ax1.fill_between(param, E_train_l-V_train_l, E_train_l+V_train_l,color='g', alpha=0.2 )
+#ax1.plot(param,E_test_l , 'g', label = 'linear_test')
+#ax1.fill_between(param, E_test_l-V_test_l, E_test_l+V_test_l,color='g', alpha=0.2 )
+#ax1.plot(param,E_train_l , 'g--', label = 'linear_train')
+#ax1.fill_between(param, E_train_l-V_train_l, E_train_l+V_train_l,color='g', alpha=0.2 )
 
 
-ax1.set_ylabel("NMSE")
-ax1.legend(loc="best")
+#ax1.set_ylabel("NMSE")
+#ax1.legend(loc="best")
 
 # #ax2.plot(param, r2_n, 'b.', label = 'spherical')
 # ax2.errorbar(param, r2_n, yerr=V_r2_n, fmt='o', color='b', ecolor='b', elinewidth=1, capsize=1,label = 'spherical');
@@ -399,8 +399,9 @@ ax1.legend(loc="best")
 
 
 
-plt.title("Memory - Santa Fe")
-plt.savefig("Memory-SF.pdf", format='pdf', dpi=1000, bbox_inches='tight', pad_inches=0.05)
+#plt.title("Memory - Santa Fe")
+#plt.savefig("Memory-SF.pdf", format='pdf', dpi=1000, bbox_inches='tight', pad_inches=0.05)
 #plt.show()
+
 
 
