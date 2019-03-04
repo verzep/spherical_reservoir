@@ -219,6 +219,7 @@ class ESN():
             #    norm_v = 1.0
             new_state = np.tanh(self.radius * (pre_activation + noise_term) / norm_v)
 
+        #linear
         elif self.neuron_activation == 7:
             noise_term = self.noise * (self.random_state_.randn(self.n_reservoir) * 2 - 1)
 

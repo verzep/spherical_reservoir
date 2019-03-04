@@ -1,4 +1,4 @@
-import numpy as np
+    import numpy as np
 from matplotlib import pyplot as plt
 import scipy.io as sio
 from pyESN import ESN
