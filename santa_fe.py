@@ -157,7 +157,7 @@ def simulate_loss(x_train,
     mse = np.sqrt(mean_squared_error(y_predicted, y_test) )/np.std(y_test)
     r2 = r2_score(y_predicted[:], y_test[:])
     
-    return np.max(1-mse_train,0) ,  np.max(1-mse,0)    , r2
+    return max(1-mse_train,0) ,  max(1-mse,0)    , r2
 
 
 
