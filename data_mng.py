@@ -1,5 +1,11 @@
 import numpy as np
-from copy import copy
+from copy import copy, deepcopy
+from matplotlib import pyplot as plt
+import scipy.io as sio
+from pyESN import ESN
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+
+
 def spherical_coord(x):
     dim = len(x)
     t = np.zeros(dim)
@@ -12,6 +18,131 @@ def spherical_coord(x):
     t[-1]= np.sign(x[-1]) * np.arccos(x[-2]/np.linalg.norm(x[len(x)-2:] ))
 
     return  r,t
+
+
+def simulate_error(x_train, y_train, x_test, y_test, scaling_param, SR_param
+                   ,neuron_activation=0
+                   ,num_sim=10):
+    count = 0
+    E_min = 100
+    E_train_min = 100
+    min_SR = None
+    min_scal = None
+
+    for SR in SR_param:
+        for scaling in scaling_param:
+            #print "scaling", scaling
+
+
+            for sim in range(num_sim):
+                mse_train = 0
+                mse = 0
+                r2 = 0
+
+                esn = ESN(n_inputs=1,
+                          n_outputs=1,
+                          n_reservoir=200,
+                          spectral_radius=SR,
+                          radius=1,
+                          sparsity=0.0,
+                          noise=0.,
+                          input_scaling=scaling / np.std(x_train),
+                          output_scaling=scaling / np.std(y_train),
+                          transient=200,
+                          reservoir_uniform=True,
+                          regularization=0.01,
+                          online_training=False,
+                          learning_rate=0,
+                          neuron_activation=neuron_activation,
+                          leak_rate=1,
+                          # random_state=seed,
+                          output_feedback=False
+                          # , wigner = True
+                          )
+
+                transient = 50
+                esn.evolve(x_train, y_train)
+                y_train_predicted = esn.train(y_train)
+
+                y_predicted = esn.predict(x_test)
+
+                mse_train += np.sqrt(mean_squared_error(y_train_predicted[transient:], y_train[ transient:])) / np.std(y_train)
+                mse += np.sqrt(mean_squared_error(y_predicted, y_test)) / np.std(y_test)
+                #r2 += r2_score(y_predicted[:], y_test[:])
+
+            #print (mse_train / num_sim)
+
+            #E_train.append(mse_train / num_sim)
+            #E_test.append(mse / num_sim)
+            #R2.append(r2 / num_sim)
+
+            # selected with the validation error
+            if mse / num_sim < E_min:
+                E_train_min = mse_train / num_sim
+                E_min = mse / num_sim
+                min_SR = SR / num_sim
+                min_scal = scaling / num_sim
+
+        #plt.plot(E_test)
+
+    #plt.show()
+
+    esn_f = ESN(n_inputs=1,
+              n_outputs=1,
+              n_reservoir=200,
+              spectral_radius=min_SR,
+              radius=1,
+              sparsity=0.0,
+              noise=0.,
+              input_scaling=min_scal / np.std(x_train),
+              output_scaling=min_scal / np.std(y_train),
+              transient=200,
+              reservoir_uniform=True,
+              regularization=0.01,
+              online_training=False,
+              learning_rate=0,
+              neuron_activation=neuron_activation,
+              leak_rate=1,
+              # random_state=seed,
+              output_feedback=False
+              # , wigner = True
+              )
+
+    transient = 50
+    esn_f.evolve(x_train, y_train)
+    y_train_predicted = esn_f.train(y_train)
+
+    y_predicted = esn_f.predict(x_test)
+
+    np.sqrt(mean_squared_error(y_train_predicted[transient:], y_train[transient:])) / np.std(y_train)
+    mse_f = np.sqrt(mean_squared_error(y_predicted, y_test)) / np.std(y_test)
+    #r2 += r2_score(y_predicted[:], y_test[:])
+
+
+    return mse_f, min_SR, min_scal
+
+
+
+
+def y_nonlinear(signal, nu, tau):
+    arg = np.zeros(len(signal))
+
+    for i in range(len(signal)):
+        arg[i] = signal[i - tau]
+
+    return np.sin(nu * arg[:])
+
+
+def nonlinear_task(data, nu, tau, train_len=500, test_len=200):
+    NL_data = y_nonlinear(data, nu, tau)
+
+    x_train = data[2 * tau:train_len] + 0
+    y_train = NL_data[2 * tau:train_len] + 0
+
+    x_test = data[train_len:train_len + test_len] + 0
+    y_test = NL_data[train_len:train_len + test_len] + 0
+
+    return x_train, y_train, x_test, y_test
 
 
 
